@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+}
+apply plugin: 'java'
+
+group 'java.bot.gta5rp'
+version '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes "Main-Class": "bot.start.Main"
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+ext {
+    versions = [
+            checkstyle: '8.14',
+            javacord  : '3.0.2',
+            sdcf4j    : 'v1.0.10',
+            okhttp    : '3.9.1',
+            jackson   : '2.9.3',
+            log4j     : '2.11.1'
+    ]
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'org.javacord:javacord:3.0.4'
+    compile group: 'javax.mail', name: 'mail', version: '1.4.1'
+    compile "de.btobastian.sdcf4j:sdcf4j-javacord:v1.0.10"
+    compile "de.btobastian.sdcf4j:sdcf4j-core:v1.0.10"
+    compile "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    compile "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
+    compile "org.apache.logging.log4j:log4j-api:${versions.log4j}"
+    compile "org.apache.logging.log4j:log4j-jul:${versions.log4j}"
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.7.2'
+}
+tasks.withType(JavaCompile) {
+    options.encoding 'UTF-8'
+}
